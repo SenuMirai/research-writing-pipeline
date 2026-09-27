@@ -1,0 +1,178 @@
+{
+  "_说明": "研究写作全流程配置模板（学位论文／期刊论文／专著／研究报告通用）。复制为 config.json 后按项目修改。脚本只读本文件，不含硬编码路径。",
+  "_对应阶段": "0=选题 1=目标界定 2=检索 3=语料库 4=分析対位 5=写作引注 6=审校提交",
+  "_体裁": "学位论文 | 期刊论文 | 专著 | 研究报告（不同体裁的差异见 references/05）",
+  "_学科": "历史学 | 文学 | 语言学 | 哲学 | 法学 | 社会学 | 人类学 | 教育学 | 政治学 | 经济学 | 传播学 | 艺术学 | 考古学 …（见 references/06）",
+  "genre": "学位论文",
+  "discipline": "（填写你的学科）",
+  "project_root": "D:/research/my-thesis",
+  "incoming_dir": "sources_raw",
+  "corpus_dir": "corpus",
+  "ledger_dir": "ledger",
+  "delivery_dir": "delivery",
+  "registry_file": "corpus/_编号注册表.json",
+  "_阶段0_选题与体例": {
+    "core_thesis": "（一句话核心命题；必须可证伪）",
+    "periods": [
+      "（分期一：说明「变了什么」）",
+      "（分期二）",
+      "（分期三）"
+    ],
+    "outline_file": "outline.md",
+    "outline_json": "outline.json",
+    "_milestones_说明": "学位论文用「开题/预答辩」；期刊论文改为「投稿/返修/录用」；结题报告改为「中期/结项」——按体裁替换",
+    "milestones": {
+      "开题": "YYYY-MM-DD",
+      "资料完成": "YYYY-MM",
+      "初稿": "YYYY-MM",
+      "修改": "YYYY-MM",
+      "提交": "YYYY-MM"
+    },
+    "conventions": {
+      "_说明": "★ 必须从目标单位的规范提取成可执行值（学位论文=培养单位；期刊=投稿须知；专著=出版社；报告=委托方）；不确定的项要问导师或编辑部，不要自行发明",
+      "citation_style": "顺序编码制",
+      "body_words_min": 30000,
+      "body_words_max": 50000,
+      "abstract_words_min": 800,
+      "abstract_words_max": 1200,
+      "keywords_min": 3,
+      "keywords_max": 5,
+      "refs_min": 30,
+      "foreign_ref_ratio_min": 33,
+      "ref_categories": [
+        "（照抄目标单位规范的类别，不要自行增删；常见：图书/期刊/会议论文集/学位论文/档案/法律文献/数据/网页）"
+      ],
+      "write_type_marker": false,
+      "archive_in_reflist": false,
+      "web_in_reflist": false,
+      "_易错点": "①一手材料（档案/判例/数据/访谈）是否入参考文献表 ②网页与数据库材料是否入表 ③是否要求写 [M]/[J] 类型标识 —— 规范未列时必须问导师或编辑部"
+    }
+  },
+  "_编号前缀": "L=研究文献(二手) A/B/...=材料库(一手) I=索引 T=工具 D=派生成果 X=排除",
+  "prefixes": {
+    "L": {
+      "desc": "研究文献（二手）",
+      "num_width": 2,
+      "start": 1
+    },
+    "A": {
+      "desc": "材料库 A（示例：档案/判例/语料/图版 全文）",
+      "num_width": 3,
+      "start": 1
+    },
+    "B": {
+      "desc": "材料库 B（示例：报刊标题/检索导出）",
+      "num_width": 3,
+      "start": 1
+    },
+    "I": {
+      "desc": "索引与目录",
+      "num_width": 2,
+      "start": 1
+    },
+    "T": {
+      "desc": "工具与项目文件",
+      "num_width": 2,
+      "start": 1
+    },
+    "D": {
+      "desc": "派生成果（直取/OCR 全文等）",
+      "num_width": 3,
+      "start": 1
+    },
+    "X": {
+      "desc": "已排除仍留档",
+      "num_width": 2,
+      "start": 1
+    }
+  },
+  "_libraries_说明": "每库必须声明：引用单元 / 落盘方式(A逐条 B共用源编号) / 定位式 / 引用层级 / 编码",
+  "libraries": [
+    {
+      "code": "A",
+      "name": "示例库A：整批导出型材料（一次抓取=一份文件，含数千条）",
+      "glob": "sources_raw/archive/*.json",
+      "citation_unit": "一条记录（如一件档案）",
+      "unit_count_expected": 3234,
+      "strategy": "B",
+      "id_carrier": "该 JSON 文件本身",
+      "locator": "日期＋件名（按你的材料替换）",
+      "level": "全文级",
+      "encoding": "utf-8",
+      "desc": null
+    },
+    {
+      "code": "B",
+      "name": "示例库B：检索导出型材料（同一条会出现在多份关键词检索结果里）",
+      "glob": "sources_raw/newspaper/检索_*.csv",
+      "citation_unit": "一条记录（如一条报刊标题／一件档案／一个判例）",
+      "unit_count_expected": null,
+      "strategy": "B",
+      "id_carrier": "去重全集（可按年/地域分卷）",
+      "locator": "报纸＋日期＋朝夕＋版面（按你的材料类型替换）",
+      "level": "标题级",
+      "encoding": "（如 utf-8 / cp932 / gb18030 / euc-kr）",
+      "dedupe_key": [
+        "（按你的材料列名填，如 标题/刊名/日期/版次）"
+      ],
+      "dedupe_drop_columns": [
+        "（去重后不需要的列，如各轮检索的命中标记）"
+      ],
+      "partition_by": "（分卷依据，如 日期[:4]；不需要分卷则删除本行）",
+      "full_scan_sources": true,
+      "note": "★ 检索导出只作留痕；引用对象必须是去重后的全集"
+    },
+    {
+      "code": "C",
+      "name": "示例库C：一档一条型材料（天然逐条，如口述／图版／判例）",
+      "glob": "sources_raw/oral/*.docx",
+      "citation_unit": "一条材料（如一次访谈／一幅图版／一个判例）",
+      "strategy": "A",
+      "id_carrier": "逐条文件",
+      "locator": "编号即可",
+      "level": "全文级",
+      "encoding": "utf-8"
+    },
+    {
+      "code": "L",
+      "name": "研究文献（二手，逐篇 PDF）",
+      "glob": "sources_raw/literature/*.pdf",
+      "citation_unit": "一篇文献",
+      "strategy": "A",
+      "id_carrier": "逐篇文件",
+      "locator": "编号即可",
+      "level": "全文级",
+      "encoding": "utf-8"
+    }
+  ],
+  "_层级定义": {
+    "全文级": "可直接引用原话、做话语分析",
+    "要点级": "可引议题脉络与提案人，不得据题名陈述内容",
+    "目录级": "可引制度事实与数量统计，不得据题名陈述内容",
+    "标题级": "只可引到「题名·日期·版面」为止"
+  },
+  "link_mode": "portable",
+  "delivery_package_pattern": "delivery/交付_{date}",
+  "zip_variants": [
+    "轻量版",
+    "演示版",
+    "完整版"
+  ],
+  "selfcheck": {
+    "bare_id_must_be_zero": true,
+    "empty_digest_must_be_zero": true,
+    "id_freeze_two_runs_delta": 0,
+    "link_broken_must_be_zero": true,
+    "citation_gap_must_be_zero": true,
+    "head_level_jump_must_be_zero": true
+  },
+  "ignore_tokens": [
+    "n",
+    "M",
+    "J",
+    "N",
+    "Z",
+    "EB/OL"
+  ],
+  "_ignore_note": "正文里谈论引用类型码（如‘不写【M】类型标识’）时，不参与编号完整性判定"
+}
